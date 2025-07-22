@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team - Little Tales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Team Page Styles */
+        body {
+            font-family: 'Comic Neue', cursive;
+            background-color: #f9f4ff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .team-header {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .team-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .team-container {
+            
+            display: flex;
+            justify-content: center; /* or space-between / space-around */
+            flex-wrap: nowrap; /* this forces it into one line */
+            gap: 20px; /* spacing between cards */
+            overflow-x: auto; /* adds scroll if width overflows */
+
+
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .photo-frame {
+            width: 200px;
+            height: 200px;
+            margin: 30px auto 20px;
+            border-radius: 50%;
+            border: 8px solid #f1c40f;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            background: #f9f9f9;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover .photo-frame img {
+            transform: scale(1.05);
+        }
+
+        .photo-frame::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 3px dashed #8e44ad;
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .member-info {
+            padding: 20px;
+        }
+
+        .member-info h3 {
+            font-family: 'Fredoka One', cursive;
+            color: #8e44ad;
+            margin-bottom: 5px;
+            font-size: 1.5rem;
+        }
+
+        .member-info .role {
+            color: #3498db;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .member-info p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f1c40f;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: #8e44ad;
+            transform: scale(1.1);
+        }
+
+        .team-values {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 60px 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .team-values h2 {
+            font-family: 'Fredoka One', cursive;
+            color: #8e44ad;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f9f4ff;
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+
+        .value-card h3 {
+            color: #8e44ad;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-header h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Team Header -->
+    <header class="team-header">
+        <h1>Meet Our Magical Team</h1>
+        <p>The creative minds behind Little Tales who work tirelessly to make storytelling accessible and engaging for all children.</p>
+    </header>
+
+    <!-- Team Members -->
+    <div class="team-container">
+        <div class="team-grid">
+            <!-- Team Member 1 -->
+            <div class="team-member">
+                <div class="photo-frame">
+                    <img src="devanshi.jpeg" alt="Devanshi Singhal">
+                </div>
+                <div class="member-info">
+                    <h3>Devanshi Singhal</h3>
+                    <span class="role"></span>
+                    <p>A Leader with a passion for inclusive education, Devanshi founded Little Tales to make storytelling accessible to all children.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="team-member">
+                <div class="photo-frame">
+                    <img src="deepanshu.jpeg" alt="Deepanshu Ruhela">
+                </div>
+                <div class="member-info">
+                    <h3>Deepanshu Ruhela</h3>
+                    <span class="role"></span>
+                    <p>Deepanshu brings our interactive stories to life with his coding magic and ensures the platform is accessible to everyone.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="team-member">
+                <div class="photo-frame">
+                    <img src="dhwani.jpeg" alt="Dhwani panchal">
+                </div>
+                <div class="member-info">
+                    <h3>Dhwani panchal</h3>
+                    <span class="role"></span>
+                    <p>Dhwani design popular stories and parent dashboard, making sure they're engaging and representative of all children.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-behance"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fas fa-palette"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="team-member">
+                <div class="photo-frame">
+                    <img src="rishu 1.jpeg" alt="David Kim">
+                </div>
+                <div class="member-info">
+                    <h3>Rishu Agarwal</h3>
+                    <!-- <span class="role">Accessibility Specialist</span> -->
+                    <p>Rishu Agarwal design and creates create story page so every child can enjoy our stories.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-medium"></i></a>
+                        <a href="#"><i class="fas fa-universal-access"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 5 -->
+            <!-- <div class="team-member">
+                <div class="photo-frame">
+                    <img src="https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Emma Rodriguez">
+                </div>
+                <div class="member-info">
+                    <h3>Emma Rodriguez</h3>
+                    <span class="role">Education Consultant</span>
+                    <p>With 15 years in early childhood education, Emma helps shape our stories to support learning and development.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fas fa-graduation-cap"></i></a>
+                        <a href="#"><i class="fas fa-book"></i></a>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Team Member 6 -->
+            <!-- <div class="team-member">
+                <div class="photo-frame">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Jamal Williams">
+                </div>
+                <div class="member-info">
+                    <h3>Jamal Williams</h3>
+                    <span class="role">UX Designer</span>
+                    <p>Jamal designs our intuitive interfaces that make Little Tales easy and fun for kids to navigate.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-dribbble"></i></a>
+                        <a href="#"><i class="fab fa-behance"></i></a>
+                        <a href="#"><i class="fas fa-mobile-alt"></i></a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+      
+        
+        <!-- Team Values Section -->
+        <div class="team-values">
+            <h2>Our Core Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">🧒</div>
+                    <h3>Child-Centered</h3>
+                    <p>Everything we do is designed with children's needs, abilities, and joy as the top priority.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">♿</div>
+                    <h3>Inclusive</h3>
+                    <p>We believe all children deserve access to great stories, regardless of ability or background.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">✨</div>
+                    <h3>Creative</h3>
+                    <p>We approach every challenge with imagination and out-of-the-box thinking.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">❤️</div>
+                    <h3>Compassionate</h3>
+                    <p>We care deeply about our users and each other, fostering a supportive environment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Awesome for icons (add this before closing body tag) -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

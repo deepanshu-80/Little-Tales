@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Little Tales - Interactive Storytelling for Kids</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="style.css">
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="image-Photoroom.png" alt="Little Tales Logo" >
+            <span>Little Tales</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#stories">Stories</a></li>
+                <li><a href="index1.html" id="createBtn">Create</a></li>
+                <li><a href="#parents">For Parents</a></li>
+                <li><a href="#about">About</a></li>
+                 <li><a href="team.html">Our Team</a></li>
+                <li id="authNavItem">
+                    <a href="#" id="loginBtn">Login</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Where Stories Come to Life!</h1>
+                <p>An interactive, inclusive storytelling experience for children of all abilities</p>
+                <a href="index1.html" class="cta-button" id="createStoryBtn"  >
+                    Create Your Story
+                    <span>✨</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <h2>What Makes Little Tales Special</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Interactive Stories</h3>
+                    <p>Children can make choices that change the story's path, creating a unique experience every time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">♿</div>
+                    <h3>Accessible Design</h3>
+                    <p>Features like text-to-speech, high contrast modes, and simplified navigation for all children.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Creative Freedom</h3>
+                    <p>Kids can create their own stories with our easy-to-use tools and share them with others.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Learning Insights</h3>
+                    <p>Parents and teachers can track reading progress and vocabulary development.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stories Section -->
+        <section class="stories" id="stories">
+            <div class="section-header">
+                <h2>Popular Stories</h2>
+                <a href="#" class="view-all" id="viewAllBtn">View All <span>→</span></a>
+            </div>
+            <div class="stories-carousel" id="storiesCarousel">
+                <!-- Stories will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Parent Section -->
+        <section class="parent-section" id="parents">
+            <h2>For Parents & Educators</h2>
+            <p>Little Tales provides tools to monitor your child's reading progress, set learning goals, and customize the storytelling experience to match their needs and interests.</p>
+            <button class="parent-btn" id="parentBtn">Parent Dashboard</button>
+        </section>
+
+        <!-- About Section -->
+        <section class="features" id="about">
+            <h2>About Little Tales</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍👩‍👧‍👦</div>
+                    <h3>Our Mission</h3>
+                    <p>To make storytelling accessible and engaging for all children, regardless of their abilities or learning styles.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>How It Works</h3>
+                    <p>Using AI and interactive technology, we create personalized stories that adapt to each child's needs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Inclusivity</h3>
+                    <p>Designed with input from educators, parents, and children with diverse needs and abilities.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Parent Dashboard -->
+    <section class="dashboard" id="dashboard">
+        <div class="dashboard-header">
+            <h2 class="dashboard-title">Parent Dashboard</h2>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+        
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h3>Reading Progress</h3>
+                <p>Your child has read <strong id="storiesRead">0</strong> stories this week.</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="readingProgress"></div>
+                </div>
+                <p>Goal: 5 stories per week</p>
+            </div>
+            
+            <div class="dashboard-card">
+                <h3>Vocabulary Growth</h3>
+                <p>New words learned: <strong id="newWords">12</strong></p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 60%;"></div>
+                </div>
+                <p>20 word goal for this month</p>
+            </div>
+            
+            <div class="dashboard-card">
+                <h3>Your Children</h3>
+                <ul class="child-list" id="childList">
+                    <li>
+                        <span>Arjun (Age 6)</span>
+                        <div class="child-actions">
+                            <button>Progress</button>
+                        </div>
+                    </li>
+                    <li>
+                        <span>Maya (Age 4)</span>
+                        <div class="child-actions">
+                            <button>Progress</button>
+                        </div>
+                    </li>
+                </ul>
+                <button class="submit-story" style="margin-top: 1rem;" id="addChildBtn">Add Child</button>
+            </div>
+            
+            <div class="dashboard-card">
+                <h3>Recent Activity</h3>
+                 <ul class="child-list" id="recentActivity">
+                    <!-- <li>Arjun read "The Magic Forest"</li> -->
+                    <!-- <li>Riya created "Robot Friends"</li>
+                    <li>Maya learned 3 new words</li>
+                    <li>Riya completed reading goal</li> -->
+                </ul> 
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Creator Modal -->
+    <div class="modal" id="storyModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <h2>Create Your Story</h2>
+            <form class="creator-form" id="storyForm">
+                <div class="form-group">
+                    <label for="storyTitle">Story Title</label>
+                    <input type="text" id="storyTitle" placeholder="Enter your story title" required>
+                </div>
+                <div class="form-group">
+                    <label for="storyType">Story Type</label>
+                    <select id="storyType" required>
+                        <option value="">Select a type</option>
+                        <option value="adventure">Adventure</option>
+                        <option value="fantasy">Fantasy</option>
+                        <option value="animal">Animal</option>
+                        <option value="scifi">Sci-Fi</option>
+                        <option value="moral">Moral Story</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ageGroup">Age Group</label>
+                    <select id="ageGroup" required>
+                        <option value="">Select age group</option>
+                        <option value="3-5">3-5 years</option>
+                        <option value="6-8">6-8 years</option>
+                        <option value="9-12">9-12 years</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="mainCharacter">Main Character</label>
+                    <input type="text" id="mainCharacter" placeholder="Who is the hero of your story?" required>
+                </div>
+                <div class="form-group">
+                    <label for="storySetting">Story Setting</label>
+                    <input type="text" id="storySetting" placeholder="Where does your story take place?" required>
+                </div>
+                <div class="form-group">
+                    <label for="storyIdea">Your Story Idea</label>
+                    <textarea id="storyIdea" rows="4" placeholder="Tell us about your story idea..." required></textarea>
+                </div>
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p>Creating your magical story...</p>
+                </div>
+                <button type="submit" class="submit-story" id="submitStory">Create My Story!</button>
+            </form>
+            
+            <div class="story-display" id="storyDisplay">
+                <h3 id="generatedTitle"></h3>
+                <div class="story-image-preview" id="storyImagePreview"></div>
+                <div id="generatedStory"></div>
+                <div class="story-actions">
+                    <button class="save-story">Save Story</button>
+                    <button class="new-story">Create Another</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Reader Modal -->
+    <div class="reader-modal" id="readerModal">
+        <div class="reader-content">
+            <button class="close-modal" id="closeReader">&times;</button>
+            <h3 class="reader-title" id="readerTitle"></h3>
+            <div class="reader-image" id="readerImage"></div>
+            <div class="reader-story" id="readerStory"></div>
+            <div class="reader-actions">
+                <button class="read-aloud-btn" id="readStoryAloud">Read Aloud</button>
+                <button class="close-reader" id="closeReaderBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-content">
+            <button class="close-modal" id="closeAuth">&times;</button>
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="loginTab">Login</div>
+                <div class="auth-tab" id="registerTab">Register</div>
+            </div>
+            
+            <form class="auth-form" id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <div class="auth-error" id="loginError"></div>
+                <button type="submit" class="auth-submit">Login</button>
+            </form>
+            
+            <form class="auth-form" id="registerForm" style="display: none;">
+                <input type="text" id="registerName" placeholder="Full Name" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <input type="password" id="registerConfirm" placeholder="Confirm Password" required>
+                <div class="auth-error" id="registerError"></div>
+                <button type="submit" class="auth-submit">Register</button>
+            </form>
+            
+            <div class="auth-switch">
+                <span id="switchText">Don't have an account?</span>
+                <button id="switchAuth">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Child Modal -->
+    <div class="modal" id="childModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeChildModal">&times;</button>
+            <h2>Add a Child</h2>
+            <form class="creator-form" id="childForm">
+                <div class="form-group">
+                    <label for="childName">Child's Name</label>
+                    <input type="text" id="childName" placeholder="Enter child's name" required>
+                </div>
+                <div class="form-group">
+                    <label for="childAge">Age</label>
+                    <input type="number" id="childAge" placeholder="Enter child's age" min="3" max="12" required>
+                </div>
+                <div class="form-group">
+                    <label for="childInterests">Interests (comma separated)</label>
+                    <input type="text" id="childInterests" placeholder="e.g. animals, space, princesses">
+                </div>
+                <button type="submit" class="submit-story">Add Child</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Little Tales</h3>
+                <p>Making storytelling accessible and engaging for all children.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Explore</h3>
+                <ul>
+                    <li><a href="#stories">Stories</a></li>
+                    <li><a href="#" id="createLink">Create</a></li>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">Popular</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>About</h3>
+                <ul>
+                    <li><a href="#about">Our Story</a></li>
+                    <li><a href="team.html">Team</a></li>
+                    <li><a href="#">Accessibility</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 Little Tales. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAECl8kTenbCEWocBugBDlYk-Weh-xZzDI",
+              authDomain: "login-ca658.firebaseapp.com",
+            // ... rest of your config
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="index.js">
+       
+    </script>
+</body>
+</html>

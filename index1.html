@@ -1,0 +1,513 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Little Tales - Story Creator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7c5dfa;
+            --primary-dark: #5a3ffc;
+            --secondary: #f8d57e;
+            --accent: #ff7eb9;
+            --light: #f8f9ff;
+            --dark: #2e2a47;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f8 100%);
+            color: var(--dark);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .story-creator {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 3rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(46, 42, 71, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .story-creator::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+        
+        h1 {
+            font-family: 'Patrick Hand', cursive;
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--secondary);
+            transform: skewY(-2deg);
+        }
+        
+        .form-group {
+            margin-bottom: 1.8rem;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.1rem;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e3ff;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            background-color: var(--light);
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(124, 93, 250, 0.2);
+        }
+        
+        textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 2rem auto 0;
+            box-shadow: 0 4px 15px rgba(124, 93, 250, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 93, 250, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .submit-btn::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover::after {
+            left: 100%;
+        }
+        
+        .story-preview {
+            margin-top: 2rem;
+            padding: 2.5rem;
+            background: var(--light);
+            border-radius: 15px;
+            display: none;
+            border-left: 5px solid var(--primary);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .loading {
+            text-align: center;
+            margin: 2rem 0;
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        #preview-title {
+            font-family: 'Patrick Hand', cursive;
+            color: var(--primary-dark);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        #preview-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--dark);
+            white-space: pre-line;
+        }
+        
+        .form-group::after {
+            content: "";
+            display: block;
+            width: 30px;
+            height: 3px;
+            background: var(--secondary);
+            margin-top: 5px;
+        }
+        
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+        
+        .decorative-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+        
+        .star:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .star:nth-child(2) {
+            top: 25%;
+            right: 7%;
+            animation: float 5s ease-in-out infinite 0.5s;
+        }
+        
+        .star:nth-child(3) {
+            bottom: 15%;
+            left: 8%;
+            animation: float 6s ease-in-out infinite 1s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @media (max-width: 768px) {
+            .story-creator {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="decorative-elements">
+        <div class="star">★</div>
+        <div class="star">✦</div>
+        <div class="star">✧</div>
+    </div>
+    
+    <div class="story-creator">
+        <h1>Create Your Magical Story</h1>
+        <form id="storyForm">
+            <div class="form-group">
+                <label for="title">Story Title</label>
+                <input type="text" id="title" required placeholder="The Amazing Adventure of...">
+            </div>
+            
+            <div class="form-group">
+                <label for="genre">Genre</label>
+                <select id="genre" required>
+                    <option value="">Select a genre</option>
+                    <option value="adventure">Adventure</option>
+                    <option value="fantasy">Fantasy</option>
+                    <option value="animal">Animal</option>
+                    <option value="scifi">Sci-Fi</option>
+                    <option value="educational">Educational</option>
+                    <option value="fairytale">Fairy Tale</option>
+                    <option value="mystery">Mystery</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="age">Age Group</label>
+                <select id="age" required>
+                    <option value="">Select age group</option>
+                    <option value="3-5">3-5 years</option>
+                    <option value="6-8">6-8 years</option>
+                    <option value="9-12">9-12 years</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="character">Main Character</label>
+                <input type="text" id="character" required placeholder="e.g. Brave lion, Curious robot, Friendly ghost">
+            </div>
+            
+            <div class="form-group">
+                <label for="setting">Story Setting</label>
+                <input type="text" id="setting" required placeholder="e.g. Enchanted forest, Space station, Underwater city">
+            </div>
+            
+            <div class="form-group">
+                <label for="prompt">Story Idea</label>
+                <textarea id="prompt" required placeholder="Describe what you want to happen in the story... (e.g. found a magic key, discovered a secret door, made friends with a dragon)"></textarea>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Creating your magical story...</p>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                <span class="btn-text">Create Story</span>
+            </button>
+        </form>
+        
+        <div class="story-preview" id="preview">
+            <h2 id="preview-title"></h2>
+            <div id="preview-content"></div>
+            <button class="submit-btn" id="new-story">Create Another Story</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('storyForm');
+            const preview = document.getElementById('preview');
+            const loading = document.getElementById('loading');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Show loading spinner
+                loading.style.display = 'block';
+                form.style.opacity = '0.5';
+                form.style.pointerEvents = 'none';
+                
+                // Get form values
+                const title = document.getElementById('title').value;
+                const genre = document.getElementById('genre').value;
+                const age = document.getElementById('age').value;
+                const character = document.getElementById('character').value;
+                const setting = document.getElementById('setting').value;
+                const prompt = document.getElementById('prompt').value;
+                
+                // Simulate processing delay (in a real app, this would call an API)
+                setTimeout(function() {
+                    // Generate the story based on inputs
+                    const story = generateStory(title, genre, age, character, setting, prompt);
+                    
+                    // Display the generated story
+                    document.getElementById('preview-title').textContent = title;
+                    document.getElementById('preview-content').innerHTML = formatStory(story);
+                    
+                    // Hide loading, show preview
+                    loading.style.display = 'none';
+                    form.style.opacity = '1';
+                    form.style.pointerEvents = 'auto';
+                    preview.style.display = 'block';
+                    
+                    // Scroll to preview
+                    preview.scrollIntoView({ behavior: 'smooth' });
+                }, 2500);
+            });
+            
+            // Create another story
+            document.getElementById('new-story').addEventListener('click', function() {
+                preview.style.display = 'none';
+                form.reset();
+                form.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Story generation function
+            function generateStory(title, genre, age, character, setting, prompt) {
+                // More detailed story templates based on age group and genre
+                let story = '';
+                const genreAdjectives = {
+                    'adventure': 'exciting',
+                    'fantasy': 'magical',
+                    'animal': 'heartwarming',
+                    'scifi': 'futuristic',
+                    'educational': 'enlightening',
+                    'fairytale': 'enchanted',
+                    'mystery': 'mysterious'
+                };
+                
+                const genreTheme = genreAdjectives[genre] || 'wonderful';
+                
+                if (age === '3-5') {
+                    story = `Once upon a time in a ${genreTheme} ${setting}, there lived ${character}. 
+
+One sunny morning, ${character} discovered ${prompt}. 
+
+"Oh my!" exclaimed ${character}. "This is ${genreTheme}!" 
+
+With a happy heart, ${character} explored this new discovery, meeting friendly creatures along the way. They laughed and played together until the stars came out. 
+
+As ${character} curled up to sleep that night, they dreamed of more ${genreTheme} adventures to come. 
+
+The end. What a happy day!`;
+                } 
+                else if (age === '6-8') {
+                    story = `In the ${setting}, known throughout the land for its ${genreTheme} wonders, ${character} had an ordinary life—until the day ${prompt}. 
+
+At first, ${character} felt unsure. "What should I do?" they wondered. 
+
+But ${character} remembered what their wise old friend always said: "Every adventure begins with a single step." 
+
+Taking a deep breath, ${character} stepped forward into the unknown. Along the journey, they met challenges that tested their courage and made friends who helped along the way. 
+
+In the end, ${character} discovered that ${randomLesson(genre)}. 
+
+And so, ${character} returned home, forever changed by their ${genreTheme} adventure.`;
+                } 
+                else {
+                    story = `The ${setting} was no ordinary place—it was a realm of ${genreTheme} possibilities. ${character}, though ${randomAdjective()}, had always felt destined for something more. 
+
+When ${prompt}, it set in motion events that would test ${character}'s ${randomQuality()}. 
+
+Through ${randomNumber(3,7)} ${genreTheme} days and star-filled nights, ${character} journeyed across ${randomLocation()}, facing ${randomChallenge()} and overcoming it with ${randomSolution()}. 
+
+The people of ${setting} would long tell the tale of how ${character} ${randomAchievement()}, proving that even ${randomPhrase()} can change the world. 
+
+As the ${genreTheme} light of dawn touched ${setting} once more, ${character} smiled, knowing this was only the beginning...`;
+                }
+                
+                return story;
+            }
+            
+            function formatStory(text) {
+                // Add paragraph breaks and styling
+                const paragraphs = text.split('\n\n');
+                let html = '';
+                
+                paragraphs.forEach(para => {
+                    if (para.trim() !== '') {
+                        html += `<p>${para}</p>`;
+                    }
+                });
+                
+                return html;
+            }
+            
+            // Helper functions for story generation
+            function randomAdjective() {
+                const adjectives = ['small', 'young', 'ordinary', 'humble', 'quiet', 'unlikely'];
+                return adjectives[Math.floor(Math.random() * adjectives.length)];
+            }
+            
+            function randomQuality() {
+                const qualities = ['wit', 'courage', 'kindness', 'determination', 'cleverness', 'compassion'];
+                return qualities[Math.floor(Math.random() * qualities.length)];
+            }
+            
+            function randomLesson(genre) {
+                const lessons = {
+                    'adventure': 'the greatest treasures are the friends we make along the way',
+                    'fantasy': 'true magic comes from believing in yourself',
+                    'animal': 'even the smallest creature can make a big difference',
+                    'scifi': 'technology should always serve kindness',
+                    'educational': 'learning never ends and every day brings new discoveries',
+                    'fairytale': 'goodness and bravery will always be rewarded',
+                    'mystery': 'the truth is often hidden in plain sight'
+                };
+                return lessons[genre] || 'every experience teaches us something valuable';
+            }
+            
+            function randomLocation() {
+                const locations = ['ancient ruins', 'floating islands', 'crystal caves', 'enchanted valleys', 'forgotten cities'];
+                return locations[Math.floor(Math.random() * locations.length)];
+            }
+            
+            function randomChallenge() {
+                const challenges = ['a puzzle that tested their mind', 'a foe that challenged their spirit', 'a riddle with no obvious answer', 'a danger that threatened everything they loved'];
+                return challenges[Math.floor(Math.random() * challenges.length)];
+            }
+            
+            function randomSolution() {
+                const solutions = ['quick thinking', 'unexpected help from a friend', 'remembering an old lesson', 'a sudden burst of creativity'];
+                return solutions[Math.floor(Math.random() * solutions.length)];
+            }
+            
+            function randomAchievement() {
+                const achievements = ['saved the day', 'brought peace to the land', 'discovered a great truth', 'united divided peoples'];
+                return achievements[Math.floor(Math.random() * achievements.length)];
+            }
+            
+            function randomPhrase() {
+                const phrases = ['the smallest spark', 'a single voice', 'the most unlikely hero', 'one determined soul'];
+                return phrases[Math.floor(Math.random() * phrases.length)];
+            }
+            
+            function randomNumber(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+        });
+    </script>
+</body>
+</html> 
+
