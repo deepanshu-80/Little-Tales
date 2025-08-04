@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const childForm = document.getElementById('childForm');
     const childList = document.getElementById('childList');
     const recentActivity = document.getElementById('recentActivity');
+    
+
   
 
     
@@ -122,55 +124,65 @@ document.addEventListener('DOMContentLoaded', function() {
     loadChildren();
 
     // Handle story reading
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('read-btn')) {
-            const storyId = parseInt(e.target.getAttribute('data-id'));
-            const story = popularStories.find(s => s.id === storyId);
-            if (story) {
-                document.getElementById('readerTitle').textContent = story.title;
-                document.getElementById('readerImage').style.backgroundImage = `url('${story.image}')`;
-                document.getElementById('readerStory').innerHTML = `<p>${story.content}</p>`;
-                readerModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
+let currentSpeech = null; // Track the current speech synthesis
+
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('read-btn')) {
+        const storyId = parseInt(e.target.getAttribute('data-id'));
+        const story = popularStories.find(s => s.id === storyId);
+        if (story) {
+            document.getElementById('readerTitle').textContent = story.title;
+            document.getElementById('readerImage').style.backgroundImage = `url('${story.image}')`;
+            document.getElementById('readerStory').innerHTML = `<p>${story.content}</p>`;
+            readerModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Add to recent activity if logged in
+            if (currentUser) {
+                const activityItem = document.createElement('li');
+                activityItem.textContent = `Read "${story.title}"`;
+                recentActivity.insertBefore(activityItem, recentActivity.firstChild);
                 
-                // Add to recent activity if logged in
-                if (currentUser) {
-                    const activityItem = document.createElement('li');
-                    activityItem.textContent = `Read "${story.title}"`;
-                    recentActivity.insertBefore(activityItem, recentActivity.firstChild);
-                    
-                    // Update reading progress
-                    const storiesRead = document.getElementById('storiesRead');
-                    storiesRead.textContent = parseInt(storiesRead.textContent) + 1;
-                    const progress = Math.min(100, (parseInt(storiesRead.textContent) / 5) * 100);
-                    document.getElementById('readingProgress').style.width = `${progress}%`;
-                }
+                // Update reading progress
+                const storiesRead = document.getElementById('storiesRead');
+                storiesRead.textContent = parseInt(storiesRead.textContent) + 1;
+                const progress = Math.min(100, (parseInt(storiesRead.textContent) / 5) * 100);
+                document.getElementById('readingProgress').style.width = `${progress}%`;
             }
         }
-    });
+    }
+});
 
-    // Close reader modal
-    document.getElementById('closeReader').addEventListener('click', function() {
-        readerModal.style.display = 'none';
-        document.body.style.overflow = '';
-    });
+// Close reader modal and stop speech
+function closeReader() {
+    readerModal.style.display = 'none';
+    document.body.style.overflow = '';
+    if (currentSpeech) {
+        window.speechSynthesis.cancel();
+        currentSpeech = null;
+    }
+}
 
-    document.getElementById('closeReaderBtn').addEventListener('click', function() {
-        readerModal.style.display = 'none';
-        document.body.style.overflow = '';
-    });
+document.getElementById('closeReader').addEventListener('click', closeReader);
+document.getElementById('closeReaderBtn').addEventListener('click', closeReader);
 
-    // Read story aloud
-    document.getElementById('readStoryAloud').addEventListener('click', function() {
-        if ('speechSynthesis' in window) {
-            const speech = new SpeechSynthesisUtterance();
-            speech.text = document.getElementById('readerTitle').textContent + ". " + 
-                          document.getElementById('readerStory').textContent;
-            window.speechSynthesis.speak(speech);
-        } else {
-            alert('Text-to-speech is not supported in your browser');
+// Read story aloud
+document.getElementById('readStoryAloud').addEventListener('click', function() {
+    if ('speechSynthesis' in window) {
+        // Cancel any ongoing speech
+        if (currentSpeech) {
+            window.speechSynthesis.cancel();
         }
-    });
+        
+        const speech = new SpeechSynthesisUtterance();
+        speech.text = document.getElementById('readerTitle').textContent + ". " + 
+                      document.getElementById('readerStory').textContent;
+        currentSpeech = speech;
+        window.speechSynthesis.speak(speech);
+    } else {
+        alert('Text-to-speech is not supported in your browser');
+    }
+});
 
     // Check if user is logged in (from localStorage)
     function checkAuth() {
@@ -212,6 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
         authModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
     });
+
 
     // Show parent dashboard
     parentBtn.addEventListener('click', function() {
