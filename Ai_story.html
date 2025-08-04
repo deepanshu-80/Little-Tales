@@ -6,12 +6,14 @@
     <title>Little Tales - AI Story Creator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Patrick+Hand&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <!-- PDF Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            /* Story-themed color palette */
             --primary: #7c5dfa;
             --primary-dark: #5a3ffc;
             --secondary: #f8d57e;
@@ -50,7 +52,6 @@
             color: var(--dark);
         }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             padding: 30px;
@@ -120,7 +121,6 @@
             border-color: var(--primary);
         }
 
-        /* Story Creator Form */
         .story-creator {
             background: var(--dark-card);
             border-radius: 16px;
@@ -268,7 +268,6 @@
             box-shadow: none;
         }
 
-        /* Loading Indicator */
         .loading {
             text-align: center;
             margin: 2rem 0;
@@ -286,7 +285,6 @@
             margin: 0 auto 1rem;
         }
 
-        /* Story Preview */
         .story-preview {
             background: var(--dark-card);
             border-radius: 16px;
@@ -382,7 +380,6 @@
             background-color: #ff6aa8;
         }
 
-        /* Decorative Elements */
         .decorative-elements {
             position: absolute;
             width: 100%;
@@ -405,14 +402,12 @@
             animation: float 8s ease-in-out infinite;
         }
 
-        /* Character animations */
         .character {
             position: absolute;
             font-size: 2rem;
             animation: bounce 3s ease-in-out infinite;
         }
 
-        /* Animations */
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -433,7 +428,6 @@
             50% { transform: translateY(-20px); }
         }
 
-        /* Speech bubble for read aloud button */
         .speech-bubble {
             position: absolute;
             background: white;
@@ -472,7 +466,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .main-content {
                 padding: 20px;
@@ -509,7 +502,6 @@
         <div class="character" style="bottom:10%;right:10%;">🧙‍♂️</div>
     </div>
     
-    <!-- Main Content -->
     <div class="main-content">
         <div class="header">
             <h1>Create Ai Magical Story</h1>
@@ -517,6 +509,10 @@
                 <button class="btn" id="themeToggle">
                     <i class="fas fa-moon"></i>
                     <span>Light Mode</span>
+                </button>
+                <button class="btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
                 </button>
             </div>
         </div>
@@ -624,12 +620,35 @@
     </div>
 
     <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAECl8kTenbCEWocBugBDlYk-Weh-xZzDI",
+            authDomain: "login-ca658.firebaseapp.com",
+            projectId: "login-ca658",
+            storageBucket: "login-ca658.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef1234567890"
+        };
+
+        // Initialize Firebase only once
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const user = JSON.parse(localStorage.getItem('littleTalesUser'));
+            if (!user) {
+                alert('Please login to create stories');
+                window.location.href = 'index.html';
+                return;
+            }
+
             // Theme Toggle Functionality
             const themeToggle = document.getElementById('themeToggle');
             const body = document.body;
             
-            // Initialize theme from localStorage or prefer-color-scheme
+            // Initialize theme
             const savedTheme = localStorage.getItem('theme') || 
                               (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
             body.classList.add(savedTheme + '-mode');
@@ -659,7 +678,48 @@
                     text.textContent = 'Dark Mode';
                 }
             }
-            
+
+            // Logout Functionality
+            const logoutBtn = document.getElementById('logoutBtn');
+            logoutBtn.addEventListener('click', function() {
+                // Show loading state
+                const originalHtml = logoutBtn.innerHTML;
+                logoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging out...';
+                logoutBtn.disabled = true;
+
+                // Stop any ongoing speech
+                if (window.speechSynthesis && window.speechSynthesis.speaking) {
+                    window.speechSynthesis.cancel();
+                }
+
+                // Perform logout
+                firebase.auth().signOut()
+                    .then(() => {
+                        // Clear storage
+                        localStorage.removeItem('littleTalesUser');
+                        localStorage.removeItem('stories');
+                        
+                        // Redirect to home
+                        window.location.href = 'index.html';
+                    })
+                    .catch((error) => {
+                        console.error('Logout error:', error);
+                        alert('Error during logout. Please try again.');
+                        
+                        // Reset button
+                        logoutBtn.innerHTML = originalHtml;
+                        logoutBtn.disabled = false;
+                    });
+            });
+
+            // Auth state listener
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (!user) {
+                    localStorage.removeItem('littleTalesUser');
+                    window.location.href = 'index.html';
+                }
+            });
+
             // Story Form Submission
             const form = document.getElementById('storyForm');
             const preview = document.getElementById('preview');
@@ -795,7 +855,7 @@
                 currentUtterance.onerror = function(event) {
                     console.error('SpeechSynthesis error:', event);
                     resetReadButton();
-                    alert('Sorry, there was an error reading the story. Please try again.');
+                    // alert('Sorry, there was an error reading the story. Please try again.');
                 };
                 
                 // Speak the story

@@ -82,7 +82,61 @@ document.addEventListener('DOMContentLoaded', function() {
         // { name: "Arjun", age: 6, interests: "animals, princesses" },
         // { name: "Maya", age: 4, interests: "robots, dinosaurs" }
     ];
+     // Add this function near top with other utility functions
+function checkAuthBeforeAction(actionCallback) {
+    if (currentUser) {
+        actionCallback();
+    } else {
+        
+        authModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
 
+// Update all create button event listeners (add this after loadChildren() call)
+document.getElementById('createBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    checkAuthBeforeAction(() => {
+        window.location.href = 'Ai_story.html';
+    });
+});
+
+document.getElementById('createStoryBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    checkAuthBeforeAction(() => {
+        window.location.href = 'Ai_story.html';
+    });
+});
+
+document.getElementById('createLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    checkAuthBeforeAction(() => {
+        window.location.href = 'Ai_story.html';
+    });
+});
+
+// Update the Firebase auth state listener (replace existing one)
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        currentUser = {
+            name: user.displayName || user.email,
+            email: user.email
+        };
+        localStorage.setItem('littleTalesUser', JSON.stringify(currentUser));
+        updateAuthUI();
+        
+        // Redirect to creator if coming from auth flow
+        if (window.location.search.includes('redirect=create')) {
+            window.location.href = 'Ai_story.html';
+        }
+    } else {
+        currentUser = null;
+        localStorage.removeItem('littleTalesUser');
+        updateAuthUI();
+    }
+});
+
+ 
     // Populate popular stories
     function loadPopularStories() {
         storiesCarousel.innerHTML = '';
@@ -395,7 +449,7 @@ document.getElementById('readStoryAloud').addEventListener('click', function() {
         childForm.reset();
     });
 
-    // (Previous JavaScript code for story creation and other features remains the same)
+
 
     // Initialize authentication
     checkAuth();

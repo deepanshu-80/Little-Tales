@@ -87,6 +87,7 @@ nav ul li a:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+
 /* Accessibility Toolbar */
 .accessibility-toolbar {
     background-color: var(--light);
