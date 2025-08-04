@@ -132,7 +132,7 @@ nav ul li a:hover {
 
 /* Hero Section */
 .hero {
-    background: url('back.png') no-repeat center center;
+    background: url('images/back.png') no-repeat center center;
     background-size: cover;
     height: 500px;
     display: flex;

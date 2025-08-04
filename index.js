@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             age: "5-7",
             rating: 4.8,
             type: "fantasy",
-            image: "magical.png",
+            image: "images/magical.png",
             content: "Once upon a time, in a magical forest filled with talking animals and sparkling trees, a young explorer named Lily discovered a hidden path. As she followed it, she met a wise old owl who gave her a special mission - to return the stolen colors to the rainbow! Along the way, Lily helped a squirrel find its lost acorns, convinced a grumpy bear to share honey with bees, and solved the riddle of the singing stones. In the end, she found the colors hidden in a crystal cave and restored the rainbow's brilliance. The forest celebrated with a grand party, and Lily learned that kindness and courage can solve even the biggest problems."
         },
         {
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
             age: "7-9",
             rating: 4.6,
             type: "scifi",
-            image: "robot.png",
+            image: "images/robot.png",
             content: "In the year 2145, 10-year-old Max built his first robot from spare parts - a little companion he named Bolt. To his surprise, Bolt came to life with a cheerful 'Beep-boop!' and amazing abilities. Together, they discovered that other household robots in their smart city were mysteriously malfunctioning. Following clues through neon-lit streets and high-tech parks, Max and Bolt uncovered a computer virus spread by an abandoned toy robot who just wanted friends. Using teamwork and clever programming, they fixed all the robots and created a robot club where no machine would ever feel lonely again. Max learned that technology works best when it brings people (and robots) together."
         },
         {
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
             age: "6-8",
             rating: 4.7,
             type: "adventure",
-            image: "underwater.png",
+            image: "images/underwater.png",
             content: "When Mia's submarine-shaped sandcastle was washed away by a wave, she never expected it would return as a real mini-submarine! Curious, she climbed in and found herself transported to Coral Kingdom, an underwater world where fish wore hats and seahorses delivered mail. But something was wrong - the kingdom's precious Pearl of Peace had gone missing, and without it, the ocean currents were becoming dangerously strong. With her new friend Finn the flying fish, Mia searched sunken ships, interviewed an octopus detective, and finally discovered the pearl inside a giant clam who didn't realize what it had. After returning the pearl, Mia was named Honorary Guardian of the Ocean before her submarine turned back into sand. She woke up on the beach with seashells in her pocket and the sound of laughing waves in her ears."
         },
         {
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
             age: "4-6",
             rating: 5.0,
             type: "fantasy",
-            image: "king.png",
+            image: "images/king.png",
             content: "Everyone in the village was afraid of the dragon on the mountain, but little Noah wasn't so sure. While picking berries one day, he found the dragon crying because it had burned its own birthday cake with its fiery sneezes. Noah helped bake a new cake (using his mom's fireproof recipe) and discovered the dragon, whose name was Puff, was actually very gentle. When the village baker got stuck in a tree, Puff flew to the rescue, and when winter came, Puff's warm breath melted the icy roads. The villagers threw Puff a thank-you party with extra-large cakes, and Noah gained both a best friend and an important lesson: never judge someone by their scales!"
         },
         {
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
             age: "8-10",
             rating: 4.9,
             type: "scifi",
-            image: "space.png",
+            image: "images/space.png",
             content: "During a school trip to the space museum, Jaden accidentally activated an ancient alien device that teleported him aboard a real spaceship! The ship's AI, named Nova, explained that Jaden had been chosen to represent Earth in the Galactic Friendship Games. As they zoomed past rainbow nebulae and through asteroid fields, Jaden competed in zero-gravity soccer, solved puzzles with tentacled mathematicians, and taught aliens how to high-five. When sabotage threatened to cancel the games, Jaden used his knowledge of teamwork from soccer to uncover the culprit - a lonely robot who just wanted attention. After fixing the problem together, Jaden won the Spirit of Cooperation award and was returned home just in time for dinner, with amazing stories that no one quite believed (except his little sister, who knew all along that space was awesome)."
         }
     ];
