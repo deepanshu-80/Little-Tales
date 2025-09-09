@@ -936,9 +936,10 @@ nav ul li a:hover {
 
 /* Navigation for logged-in users */
 .user-nav {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+   display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
 }
 
 .user-avatar {
@@ -1071,4 +1072,69 @@ footer {
     :root {
         --text-size: 13px;
     }
+}
+
+/* Avatar dropdown */
+.profile {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: #695acd;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  min-width: 160px;
+  z-index: 200;
+  padding: 8px; /* button ke around thoda gap */
+}
+
+.dropdown button {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+  background-color: #FFD166; /* default yellowish look */
+  color: #333;
+  border-radius: 6px;
+  margin-bottom: 8px; /* buttons ke beech gap */
+  transition: background 0.3s, color 0.3s;
+}
+
+
+.saved-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.logout-btn {
+  background-color: var(--danger);
+  color: white;
+}
+
+.dropdown button:last-child {
+  margin-bottom: 0; /* last button ke neeche gap nahi */
+}
+
+/* Specific hover colors */
+.saved-btn:hover {
+   background-color: rgba(255, 255, 255, 0.2); /* green */
+  color: white;
+}
+
+.logout-btn:hover {
+  background-color: #E53935; /* red */
+  color: white;
+}
+
+/* Smooth dropdown animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
