@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: "AIzaSyB37lrTR4B7rXZHipG1y8-FJ1D4OG72eE4" });
+const ai = new GoogleGenAI({ apiKey: "AIzaSyAaCyAw2IDuSSSCpSlyU2qReCPOlTczOKY" });
 
 async function generateStory(storyParams) {
   const { title, genre, age, character, setting, prompt } = storyParams;
